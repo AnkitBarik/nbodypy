@@ -14,10 +14,11 @@ rank = comm.Get_rank()
 
 if __name__=="__main__":
 
-    npart          = 8
+    npart          = 16
     npart_per_rank = int(npart/size)
     nsteps         = 10000
     dt             = 1e-4
+    histstep       = 20
     positions      = np.zeros([nsteps,npart,3])
     # init_mass = np.array([1e-4,1e4])#np.random.uniform(0,1,npart)
     # init_pos  = np.array([[0.5,0.5,0.5],
@@ -101,17 +102,17 @@ if __name__=="__main__":
             accel_new=None
             v_new    =None
 
-        particles=comm.bcast(particles,root=0)
-
-        if rank == 0:
-            print("%d/%d" %(istep,nsteps))
+        if rank == 0 and istep%histstep == 0:
             for kpart in range(npart):
                 positions[istep,kpart,:] = particles[kpart].pos
 
-    if rank==0:
-        fig,ax = plt.subplots(figsize=(10,10),subplot_kw={'projection':'3d'})
-        for kpart in range(npart):
-            ax.plot(positions[:,kpart,...][:,0],
-                    positions[:,kpart,...][:,1],
-                    positions[:,kpart,...][:,2])
-        plt.show()
+            fig,ax = plt.subplots(figsize=(10,10),subplot_kw={'projection':'3d'})
+            for kpart in range(npart):
+                ax.plot(positions[:,kpart,...][:,0],
+                        positions[:,kpart,...][:,1],
+                        positions[:,kpart,...][:,2])
+            plt.savefig("movie/img%05d.png" %(istep/histstep),dpi=300,bbox_inches='tight')
+            plt.close(fig)
+
+        particles=comm.bcast(particles,root=0)
+
