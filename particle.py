@@ -6,11 +6,14 @@ from constants import grav_const
 
 class Part:
 
-    def __init__(self,mass,pos,vel):
+    def __init__(self,mass=None,pos=None,vel=None):
 
-        self.pos = pos
-        self.vel = vel
-        self.mass= mass
+        if mass is not None:
+            self.mass=mass
+        if pos is not None:
+            self.pos=pos
+        if vel is not None:
+            self.vel=vel
 
     def __str__(self):
         return f"Mass={self.mass},\n position={self.pos},\n velocity={self.vel}"
