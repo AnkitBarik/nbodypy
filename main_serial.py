@@ -4,6 +4,7 @@
 import numpy as np
 import matplotlib.pyplot as plt
 import json
+from timeit import default_timer as timer
 from phys import get_accel
 from plotlib import plot_particle_traj
 
@@ -17,7 +18,7 @@ if __name__=="__main__":
     histstep       = 20 # Steps at which to save data
     cmap           = "viridis_r"
     iplot          = True # To show plot
-    isave          = True # To save plot
+    isave          = False # To save plot
 
     dat        = np.loadtxt('./input_data.solar_system',dtype='str')
     npart      = dat.shape[0]
@@ -26,7 +27,15 @@ if __name__=="__main__":
     positions  = np.float32(dat[:,2:5])
     velocities = np.float32(dat[:,5:])
     accel      = np.zeros([npart,3])
+
+    # Random particles
+    # npart      = 100
+    # mass       = 10**np.random.uniform(23,30,npart)
+    # positions  = 10**np.random.uniform(5,9,npart*3).reshape([npart,3])
+    # velocities = 10**np.random.uniform(-3,1,npart*3).reshape([npart,3])
+    # accel      = np.zeros([npart,3])
     pos_plot   = positions
+    timing     = []
 
     t = 0
 
@@ -34,6 +43,7 @@ if __name__=="__main__":
     step_counter=0 #Actual number of steps run
 
     for istep in range(nsteps):
+        tic = timer()
 
         positions += 0.5*dt*velocities
 
@@ -46,6 +56,8 @@ if __name__=="__main__":
         velocities += dt*accel
         positions  += 0.5*dt*velocities
 
+        toc = timer()
+        timing.append(toc-tic)
         if not istep%histstep:
              v_sq   = np.sum(velocities**2,axis=1)
              ke     = np.sum(0.5 * mass * v_sq)
@@ -75,6 +87,7 @@ if __name__=="__main__":
         t += dt
         step_counter += 1
 
+    print("Mean time per step: %f" %(np.mean(timing)))
     if iplot:
         fig,ax = plot_particle_traj(npart,pos_plot,cmap)
         if isave:

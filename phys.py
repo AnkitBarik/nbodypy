@@ -11,7 +11,7 @@ def get_accel_par(part1,part2):
     a1    = - grav_const*part2.mass * r/rnorm**3
     a2    = grav_const*part1.mass * r/rnorm**3
 
-    return np.array([a1, a2])
+    return a1,a2
 
 def get_accel(pos,masses,positions):
     # masses and positions of all particles except pos
