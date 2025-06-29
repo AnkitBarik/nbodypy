@@ -1,6 +1,10 @@
 # nbodypy
 [![License: GPL v3](https://img.shields.io/badge/License-GPLv3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0)
 
+<p align="center" width="100%">
+<img src="https://raw.githubusercontent.com/AnkitBarik/nbodypy/refs/heads/main/images/trajectories.png" width="500">
+</p>
+
 Python codes for N-body simulations. Uses the leapfrog scheme.
 
 ## Prerequisites
