@@ -16,7 +16,7 @@ if __name__=="__main__":
     fintime        = 365*24*3600 # one Earth year
     nsteps         = int(fintime/dt)
     checkpointstep = nsteps+1 # Save checkpoint data, turned off for now
-    histstep       = 20 # Steps at which to save data
+    histstep       = 20 # Steps at which to save output
     cmap           = "viridis_r"
     iplot          = True # To show plot
     isave          = True # To save plot
