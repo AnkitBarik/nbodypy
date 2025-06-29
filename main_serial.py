@@ -4,6 +4,7 @@
 import numpy as np
 import matplotlib.pyplot as plt
 import json
+import os
 from timeit import default_timer as timer
 from phys import get_accel
 from plotlib import plot_particle_traj
@@ -14,11 +15,11 @@ if __name__=="__main__":
     dt             = 3600 # one hour
     fintime        = 365*24*3600 # one Earth year
     nsteps         = int(fintime/dt)
-    checkpointstep = 300 # Save checkpoint data
+    checkpointstep = nsteps+1 # Save checkpoint data, turned off for now
     histstep       = 20 # Steps at which to save data
     cmap           = "viridis_r"
     iplot          = True # To show plot
-    isave          = False # To save plot
+    isave          = True # To save plot
 
     dat        = np.loadtxt('./input_data.solar_system',dtype='str')
     npart      = dat.shape[0]
@@ -91,5 +92,8 @@ if __name__=="__main__":
     if iplot:
         fig,ax = plot_particle_traj(npart,pos_plot,cmap)
         if isave:
-            plt.savefig('trajectories.pdf',bbox_inches='tight')
+            if not os.path.exists('images'):
+                os.mkdir('images')
+            plt.savefig('images/trajectories.pdf',bbox_inches='tight')
+            plt.savefig('images/trajectories.png',dpi=300,bbox_inches='tight')
         plt.show()
