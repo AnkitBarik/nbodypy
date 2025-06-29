@@ -14,21 +14,21 @@ rank = comm.Get_rank()
 
 if __name__=="__main__":
 
-    npart          = 16
+    npart          = 2
     npart_per_rank = int(npart/size)
     nsteps         = 10000
     dt             = 1e-4
     histstep       = 20
     positions      = np.zeros([nsteps,npart,3])
-    # init_mass = np.array([1e-4,1e4])#np.random.uniform(0,1,npart)
-    # init_pos  = np.array([[0.5,0.5,0.5],
-    #                       [0,0,0]])#np.random.uniform(0,1,(npart,3))
-    # init_vel  = np.array([[1e-6,1e-6,0],
-    #                       [0,0,0]])
-    # #np.random.uniform(0,1e-5,(npart,3))
-    init_mass = np.random.uniform(0,1,npart)
-    init_pos  = np.random.uniform(0,1,(npart,3))
-    init_vel  = np.random.uniform(0,1e-5,(npart,3))
+    init_mass = np.array([1e-4,1e4])#np.random.uniform(0,1,npart)
+    init_pos  = np.array([[0.5,0.5,0.5],
+                          [0,0,0]])#np.random.uniform(0,1,(npart,3))
+    init_vel  = np.array([[1e-6,1e-6,0],
+                          [0,0,0]])
+    #np.random.uniform(0,1e-5,(npart,3))
+#    init_mass = np.random.uniform(0,1,npart)
+#    init_pos  = np.random.uniform(0,1,(npart,3))
+#    init_vel  = np.random.uniform(0,1e-5,(npart,3))
 
     particles = [Part(init_mass[i],init_pos[i],init_vel[i]) for i in range(npart)]
     npairs = npart*(npart-1)//2
@@ -103,14 +103,18 @@ if __name__=="__main__":
             v_new    =None
 
         if rank == 0 and istep%histstep == 0:
-            for kpart in range(npart):
-                positions[istep,kpart,:] = particles[kpart].pos
+        #     for kpart in range(npart):
+        #         positions[istep,kpart,:] = particles[kpart].pos
 
             fig,ax = plt.subplots(figsize=(10,10),subplot_kw={'projection':'3d'})
             for kpart in range(npart):
-                ax.plot(positions[:,kpart,...][:,0],
-                        positions[:,kpart,...][:,1],
-                        positions[:,kpart,...][:,2])
+                ax.plot(particles[kpart].pos[0],
+                        particles[kpart].pos[1],
+                        particles[kpart].pos[2],
+                        'o',markersize=10)
+            #     ax.plot(positions[-1,kpart,...][:,0],
+            #             positions[-1,kpart,...][:,1],
+            #             positions[-1,kpart,...][:,2])
             plt.savefig("movie/img%05d.png" %(istep/histstep),dpi=300,bbox_inches='tight')
             plt.close(fig)
 

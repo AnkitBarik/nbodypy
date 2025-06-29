@@ -2,4 +2,4 @@
 # -*- coding: utf-8 -*-
 
 
-grav_const = 6.6743e-11
+grav_const = 6.6743e-20
